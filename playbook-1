@@ -16,12 +16,12 @@
     yum: name=httpd  state=latest                  
 
   - name: Copy WebSite to Servers
-    copy: src={{ source_file }}   dest={{ dest_file }}   #here we use vars in {{  }} format
+    copy: src={{ source_file }}   dest={{ dest_file }}   #here we use vars in "{{  }}" format
     notify: Restart Apache                               #notify will run handler with specified name if this task was started
 
   - name: Start Apache and make it enable on boot
     service: name=httpd  state=started  enabled=yes
 
-  handlers:                                             #hadlers for playbook
+  handlers:                                             #handlers for playbook
   - name: Restart Apache
     service: name=httpd state=restarted
