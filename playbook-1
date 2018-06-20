@@ -1,0 +1,27 @@
+---
+#Write name for playbook
+- name: Install Apache Web server and Upload web site
+  hosts: all
+  become: yes
+  
+#Write vars which you will use in this playbook
+  vars:
+    source_file: ./WebSite/index.html     #local repository for web site
+    dest_file:   /var/www/html            #remote directory 
+    
+#Write tasks 
+  tasks:
+
+  - name: Install httpd
+    yum: name=httpd  state=latest                  
+
+  - name: Copy WebSite to Servers
+    copy: src={{ source_file }}   dest={{ dest_file }}   #here we use vars in {{  }} format
+    notify: Restart Apache                               #notify will run handler with specified name if this task was started
+
+  - name: Start Apache and make it enable on boot
+    service: name=httpd  state=started  enabled=yes
+
+  handlers:                                             #hadlers for playbook
+  - name: Restart Apache
+    service: name=httpd state=restarted
