@@ -9,8 +9,8 @@
     
 
   tasks:
-  -name: Check and Print LINUX version
-   debug: var=ansible_os_family
+  - name: Check and Print LINUX version
+    debug: var=ansible_os_family
    
   - block:     #==========block for RedHat==========
     - name: Install Apache Server for RedHat
