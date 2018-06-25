@@ -12,16 +12,29 @@
 #Write tasks 
   tasks:
 
-  - name: Install httpd
-    yum: name=httpd  state=latest                  
+  - name: Install Apache Server for RedHat
+    yum: name=httpd  state=latest
+    when: ansible_os_family="RedHat"                  #check version of linux fro correct installation
+    
+  - name: Install Apache Server for Debian
+    apt: name=apache2  state=latest
+    when: ansible_os_family="Debian"   
 
   - name: Copy WebSite to Servers
     copy: src={{ source_file }}   dest={{ dest_file }}   #here we use vars in "{{  }}" format
     notify: Restart Apache                               #notify will run handler with specified name if this task was started
 
-  - name: Start Apache and make it enable on boot
+  - name: Start Apache and make it enable on boot fro RedHat
     service: name=httpd  state=started  enabled=yes
+    when: ansible_os_family="RedHat"
+    
+  - name: Start Apache and make it enable on boot fro Debian
+    service: name=apache2  state=started  enabled=yes
+    when: ansible_os_family="Debian"
 
   handlers:                                             #handlers for playbook
-  - name: Restart Apache
+  - name: Restart Apache RedHat
     service: name=httpd state=restarted
+    
+  - name: Restart Apache Debian
+    service: name=apache2 state=restarted
