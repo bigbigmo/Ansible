@@ -11,6 +11,8 @@
     
 #Write tasks 
   tasks:
+   -name: Check and Print LINUX version
+    debug: var=ansible_os_family
 
   - name: Install Apache Server for RedHat
     yum: name=httpd  state=latest
