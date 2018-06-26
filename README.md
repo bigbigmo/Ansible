@@ -9,5 +9,5 @@ PLAYBOOK-1 with bloks
 The same tasks with bloks
 
 PLAYBOOK-2.
-Use "template" task to generate files fron jinja templates. This templates can be rename html files which include vars from setup module 
+Use "template" task to generate files from jinja templates. This templates can rename html-files which include vars from setup module.
 (  {{  ansible_os_family }} for examle )
