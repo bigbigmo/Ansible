@@ -33,7 +33,7 @@
     when: ansible_os_family == "Debian"
 
 
-  - name: Generate index.html file
+  - name: Generate index.html file      # with "template" you can generate from j2 format with {{ vars }} new html file
     template: src={{ source_folder }}/index.j2 dest={{ dest_folder }}/index.html mode=0555
     notify:
       - Restart Apache RedHat
@@ -42,7 +42,7 @@
 
   - name: Copy WebSite folder to Servers
     copy: src={{ item }}  dest={{ dest_folder }}
-    with_fileglob: "{{ source_folder }}/*.*"
+    with_fileglob: "{{ source_folder }}/*.*"         # copy all files from source folder
 
     notify:
         - Restart Apache RedHat
