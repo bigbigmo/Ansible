@@ -1,0 +1,58 @@
+---
+- name: Install Apache Web server and Upload web site
+  hosts: all
+  become: yes
+
+  vars:
+    source_folder: ./WebSite/     #local repository for web site
+    dest_folder:   /var/www/html            #remote directory 
+
+
+  tasks:
+
+
+  - block:     #==========block for RedHat==========
+    - name: Install Apache Server for RedHat
+      yum: name=httpd  state=latest
+
+    - name: Start Apache and make it enable on boot fro RedHat
+      service: name=httpd  state=started  enabled=yes
+
+    when: ansible_os_family == "RedHat"
+
+
+
+  - block:     #==========block for Debian==========
+
+    - name: Install Apache Server for Debian
+      apt: name=apache2  state=latest
+
+    - name: Start Apache and make it enable on boot fro Debian
+      service: name=apache2  state=started  enabled=yes
+
+    when: ansible_os_family == "Debian"
+
+
+  - name: Generate index.html file
+    template: src={{ source_folder }}/index.j2 dest={{ dest_folder }}/index.html mode=0555
+    notify:
+      - Restart Apache RedHat
+      - Restart Apache Debian
+
+
+  - name: Copy WebSite folder to Servers
+    copy: src={{ item }}  dest={{ dest_folder }}
+    with_fileglob: "{{ source_folder }}/*.*"
+
+    notify:
+        - Restart Apache RedHat
+        - Restart Apache Debian
+
+  handlers:
+  - name: Restart Apache RedHat
+    service: name=httpd state=restarted
+    when: ansible_os_family == "RedHat"
+
+  - name: Restart Apache Debian
+    service: name=apache2 state=restarted
+    when: ansible_os_family == "Debian"
