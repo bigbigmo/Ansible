@@ -3,24 +3,24 @@
 - name: Install Apache Web server and Upload web site
   hosts: all
   become: yes
-  
+
 #Write vars which you will use in this playbook
   vars:
     source_file: ./WebSite/index.html     #local repository for web site
-    dest_file:   /var/www/html            #remote directory 
-    
-#Write tasks 
+    dest_file:   /var/www/html            #remote directory
+
+#Write tasks
   tasks:
-   -name: Check and Print LINUX version
+  - name: Check and Print LINUX version
     debug: var=ansible_os_family
 
   - name: Install Apache Server for RedHat
     yum: name=httpd  state=latest
     when: ansible_os_family="RedHat"                  #check version of linux fro correct installation
-    
+
   - name: Install Apache Server for Debian
     apt: name=apache2  state=latest
-    when: ansible_os_family="Debian"   
+    when: ansible_os_family="Debian"
 
   - name: Copy WebSite to Servers
     copy: src={{ source_file }}   dest={{ dest_file }}   #here we use vars in "{{  }}" format
@@ -29,7 +29,7 @@
   - name: Start Apache and make it enable on boot fro RedHat
     service: name=httpd  state=started  enabled=yes
     when: ansible_os_family="RedHat"
-    
+
   - name: Start Apache and make it enable on boot fro Debian
     service: name=apache2  state=started  enabled=yes
     when: ansible_os_family="Debian"
@@ -37,6 +37,6 @@
   handlers:                                             #handlers for playbook
   - name: Restart Apache RedHat
     service: name=httpd state=restarted
-    
+
   - name: Restart Apache Debian
     service: name=apache2 state=restarted

@@ -1,0 +1,20 @@
+---
+
+  - name: Test Cisco ansible playbook 2
+    hosts: cisco-routers
+    gather_facts: false
+    connection: local
+
+    tasks:
+
+      - name: run sh ip int br
+        ios_command:
+          commands:
+              - show ip int br
+              - show ip route
+              - sh cdp nei
+          provider: "{{ cli }}"
+        register: sh_ip_int_br_result
+
+      - name: debug register var
+        debug: var=sh_ip_int_br_result.stdout_lines

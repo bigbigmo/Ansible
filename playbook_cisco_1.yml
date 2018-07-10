@@ -1,0 +1,22 @@
+---
+
+  - name: Test Cisco ansible playbook
+    hosts: cisco-routers
+    gather_facts: false
+
+
+    tasks:
+
+     - name: Run sh ip int br
+       raw: sh ip int br | ex unass
+       register: sh_ip_int_br_result
+
+     - name: Debug register vars
+       debug: var=sh_ip_int_br_result.stdout_lines
+
+     - name: Run sh ip rou
+       raw: sh ip route | ex unass
+       register: sh_ip_route_result
+
+     - name: Debng register vars
+       debug: var=sh_ip_route_result.stdout_lines
