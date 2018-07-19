@@ -1,0 +1,8 @@
+---
+
+hostname: R1
+mgmnt_loopback: 100
+mgmnt_ip: 10.0.0.1
+ospf_ints:
+  - 192.168.28.140
+  - 10.0.0.1

@@ -19,19 +19,16 @@
           backup: yes
           provider: "{{ cli }}"
         register: cfg
+        notify: save config
 
       - name: Show updates
         debug: var=cfg.updates
         when: cfg.changed == true
 
-      - name: Save chages
-        ios_command:
-          commands:
-            write
-        when: cfg.changed == true
 
-      - name: Save chages
+    handlers:
+      - name: save config
         ios_command:
           commands:
             write
-        when: cfg.changed == true
+        provider: "{{ cli }}"

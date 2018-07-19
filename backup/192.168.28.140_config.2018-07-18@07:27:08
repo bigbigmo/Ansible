@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 1102 bytes
+Current configuration : 1157 bytes
 !
 version 12.4
 service timestamps debug datetime msec
@@ -80,10 +80,13 @@ interface FastEthernet1/0
  duplex auto
  speed auto
 !
+router ospf 1
+ log-adjacency-changes
+!
 ip forward-protocol nd
 !
 !
-no ip http server
+ip http server
 no ip http secure-server
 !
 no cdp log mismatch duplex
@@ -113,6 +116,7 @@ line aux 0
  privilege level 15
  logging synchronous
 line vty 0 4
+ exec-timeout 60 0
  transport input ssh
 !
 !

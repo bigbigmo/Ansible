@@ -2,6 +2,8 @@
 
 Create playbook for automation your environment
 
+# To start playbook move playbook file in root directory and use "ansible-playbook playbook1.yml" command
+
 PLAYBOOK-1.
 This play book use for install and start Apache Web Server with any web site.
 

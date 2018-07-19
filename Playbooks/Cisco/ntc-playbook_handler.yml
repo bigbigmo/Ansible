@@ -1,13 +1,13 @@
 ---
 
-  - name: Run show commands
-    hosts: 192.168.28.140
+  - name: Run config commands on router
+    hosts: cisco-routers
     gather_facts: false
     connection: local
 
     tasks:
 
-      - name: Run sh ip int br
+      - name: Config line vty
         ntc_show_command:
           connection: ssh
           platform: "cisco_ios"
@@ -18,4 +18,7 @@
           template_dir: "library/ntc-ansible/ntc-templates/templates"
         register: result
 
-      - debug: var=result
+      - name: Copy facts to file
+        copy:
+          content: "{{result.response | to_nice_json}}"
+          dest: "all_facts/{{ inventory_hostname }}_sh_ip_int_br.json"
