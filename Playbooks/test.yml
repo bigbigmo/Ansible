@@ -1,0 +1,17 @@
+---
+
+- hosts: 192.168.28.140
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: telnet
+    #  host: 192.168.28.140
+      telnet:
+        username: cisco
+        password: cisco
+        login_prompt: "Username: "
+        prompts:
+          - "[>|#]"
+        command:
+          - show version
